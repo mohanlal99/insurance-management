@@ -1,3 +1,4 @@
+import { connectToDB } from "../config/db.config.js";
 import { CustomerPolicy } from "../models/CustomerPolicy.js"
 import { Policy } from "../models/Policy.js"
 
@@ -7,6 +8,7 @@ import { Policy } from "../models/Policy.js"
 
 export const createCustomerPolicy = async (req, res) => {
   try {
+    await connectToDB()
     const { policyId, paymentFrequency } = req.body || {};
     const customerId = req.user.id; 
 
@@ -49,6 +51,7 @@ export const createCustomerPolicy = async (req, res) => {
 
 export const getCustomerPolicies = async (req, res) => {
   try {
+    await connectToDB()
     const customerId = req.user.id;
 
     const policies = await CustomerPolicy.find({ customer: customerId })
@@ -66,6 +69,7 @@ export const getCustomerPolicies = async (req, res) => {
 
 export const getCustomerPolicyById = async (req, res) => {
   try {
+    await connectToDB()
     const { id } = req.params;
 
     const customerPolicy = await CustomerPolicy.findById(id)
@@ -85,6 +89,7 @@ export const getCustomerPolicyById = async (req, res) => {
 
 export const renewCustomerPolicy = async (req, res) => {
   try {
+    await connectToDB()
     const { id } = req.params;
     const customerPolicy = await CustomerPolicy.findById(id).populate("policy");
 
@@ -119,6 +124,7 @@ export const renewCustomerPolicy = async (req, res) => {
 
 export const cancelCustomerPolicy = async (req, res) => {
   try {
+    await connectToDB()
     const { id } = req.params;
 
     const customerPolicy = await CustomerPolicy.findById(id);
@@ -150,6 +156,7 @@ export const cancelCustomerPolicy = async (req, res) => {
 
 export const payPremium = async (req, res) => {
   try {
+    await connectToDB()
     const { id } = req.params;
 
     const customerPolicy = await CustomerPolicy.findById(id);

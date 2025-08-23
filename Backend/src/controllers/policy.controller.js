@@ -1,3 +1,4 @@
+import { connectToDB } from "../config/db.config.js";
 import { Policy } from "../models/Policy.js";
 
 const generatePolicyCode = async () => {
@@ -11,6 +12,7 @@ const generatePolicyCode = async () => {
 // Add policy by the agent or admin
 export const addPolicies = async (req, res) => {
   try {
+    await connectToDB()
     const {
       policyType,
       title,
@@ -67,6 +69,7 @@ export const addPolicies = async (req, res) => {
 // Get policies controller
 export const getPolicies = async (req, res) => {
   try {
+    await connectToDB()
     // Extract query params (filters)
     const { category, country, minPrice, maxPrice, isActive, sortBy, order = "asc", page = 1, limit = 10 } = req.query || {};
 
@@ -112,6 +115,7 @@ export const getPolicies = async (req, res) => {
 // get policies by the Id
 export const getPoliciesById = async (req, res) => {
   try {
+    await connectToDB()
     const { id } = req.params;
 
     const policy = await Policy.findById(id).populate("createdBy", "-_id name email role");
@@ -129,6 +133,7 @@ export const getPoliciesById = async (req, res) => {
 // update policy by the id
 export const updatePolicy = async (req, res) => {
   try {
+    await connectToDB()
     const { id } = req.params;
     const updates = req.body;
 
@@ -151,6 +156,7 @@ export const updatePolicy = async (req, res) => {
 // Delete policies by the admin or agent
 export const deletePolicy = async (req, res) => {
   try {
+    await connectToDB()
     const { id } = req.params;
 
     const deletedPolicy = await Policy.findByIdAndDelete(id);

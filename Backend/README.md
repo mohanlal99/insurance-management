@@ -26,9 +26,18 @@ Authentication is implemented using **JWT (JSON Web Token)** for secure user log
   - `email`: String (required)
   - `password`: String (required)
 
+- **Reset**
+  - `email`: String (required)
+
+- **Reset Token**
+  - `newPassword`: String (required)
+
 ### API Endpoints:
 - **POST** `/api/auth/register` → Register new user  
 - **POST** `/api/auth/login` → Login user & return JWT  
+- **POST** `/api/auth/reset` → put email and send link to the email
+- **POST** `/api/auth/reset/:token` → add token in parmas and body in new password
+
 - **Protected Routes** → Use `Authorization: Bearer <token>` in headers  
 
 ### Example JWT Response:

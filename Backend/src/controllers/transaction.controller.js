@@ -1,3 +1,4 @@
+import { connectToDB } from "../config/db.config.js";
 import { Transaction } from "../models/ClaimTransaction.js";
 
 
@@ -7,6 +8,7 @@ import { Transaction } from "../models/ClaimTransaction.js";
  */
 export const createTransaction = async (req, res) => {
   try {
+    await connectToDB()
     const {  customerPolicy, claim, amount, transactionType, paymentMethod, referenceId, remarks } = req.body || {};
     const customer = req.user?.id
     // Required field checks
@@ -52,6 +54,7 @@ export const createTransaction = async (req, res) => {
  */
 export const getAllTransactions = async (req, res) => {
   try {
+    await connectToDB()
     const transactions = await Transaction.find()
       .populate("customer", "name email")
       .populate("customerPolicy")
@@ -68,6 +71,7 @@ export const getAllTransactions = async (req, res) => {
  */
 export const getMyTransactions = async (req, res) => {
   try {
+    await connectToDB()
     const customerId = req.user.id; // assuming req.user is set
     const transactions = await Transaction.find({ customer: customerId })
       .populate("customerPolicy")
@@ -84,6 +88,7 @@ export const getMyTransactions = async (req, res) => {
  */
 export const getTransactionById = async (req, res) => {
   try {
+    await connectToDB()
     const { id } = req.params;
     const transaction = await Transaction.findById(id)
       .populate("customer", "name email")
@@ -105,6 +110,7 @@ export const getTransactionById = async (req, res) => {
  */
 export const updateTransactionStatus = async (req, res) => {
   try {
+    await connectToDB()
     const { id } = req.params;
     const { status } = req.body || {};
 

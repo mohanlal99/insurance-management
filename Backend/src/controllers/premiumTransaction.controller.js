@@ -1,5 +1,6 @@
 import { PremiumTransaction } from "../models/PremiumTransaction.js";
 import { CustomerPolicy } from "../models/CustomerPolicy.js";
+import { connectToDB } from "../config/db.config.js";
 
 /**
  * @desc Initiate premium payment
@@ -8,6 +9,7 @@ import { CustomerPolicy } from "../models/CustomerPolicy.js";
 
 export const initiatePremiumPayment = async (req, res) => {
   try {
+    await connectToDB()
     const { customerPolicyId, amount, isInstallment, installmentNumber } =
       req.body || {};
 
@@ -106,6 +108,7 @@ export const initiatePremiumPayment = async (req, res) => {
  */
 export const verifyPremiumPayment = async (req, res) => {
   try {
+    await connectToDB()
     const {
       transactionId,
       success,
@@ -213,6 +216,7 @@ export const verifyPremiumPayment = async (req, res) => {
  */
 export const retryPremiumPayment = async (req, res) => {
   try {
+    await connectToDB()
     const { transactionId } = req.params;
 
     const oldTx = await PremiumTransaction.findById(transactionId);
@@ -250,6 +254,7 @@ export const retryPremiumPayment = async (req, res) => {
  */
 export const refundPremiumPayment = async (req, res) => {
   try {
+    await connectToDB()
     if (req.user.role !== "admin") {
       return res
         .status(403)
@@ -287,6 +292,7 @@ export const refundPremiumPayment = async (req, res) => {
  */
 export const cancelPremiumPayment = async (req, res) => {
   try {
+    await connectToDB()
     const { transactionId } = req.params;
     const premiumTx = await PremiumTransaction.findById(transactionId);
     if (!premiumTx)
@@ -326,6 +332,7 @@ export const cancelPremiumPayment = async (req, res) => {
  */
 export const generateInvoice = async (req, res) => {
   try {
+    await connectToDB()
     const { transactionId } = req.params;
     const premiumTx = await PremiumTransaction.findById(transactionId).populate(
       "customer policy"
@@ -364,6 +371,7 @@ export const generateInvoice = async (req, res) => {
  */
 export const getPremiumTransactionById = async (req, res) => {
   try {
+    await connectToDB()
     const { transactionId } = req.params;
     const premiumTx = await PremiumTransaction.findById(transactionId).populate(
       "customer policy"
@@ -392,6 +400,7 @@ export const getPremiumTransactionById = async (req, res) => {
  */
 export const getCustomerPremiumTransactions = async (req, res) => {
   try {
+    await connectToDB()
     const { customerId } = req.params;
 
     if (req.user.role !== "admin" && req.user.id !== customerId) {

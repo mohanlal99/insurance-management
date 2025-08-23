@@ -5,6 +5,7 @@ import { Token } from "../models/TokenBlackList.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { sendMail } from "../services/mailer.js";
+import { connectToDB } from "../config/db.config.js";
 
 export const authRoute = e.Router();
 
@@ -12,7 +13,8 @@ export const authRoute = e.Router();
 authRoute.post("/register", async (req, res) => {
   try {
     const { name, email, gender, password, phone } = req.body || {};
-
+    
+    await connectToDB()
     if (!name || !email || !gender || !password) {
       return res
         .status(400)
@@ -55,7 +57,9 @@ authRoute.post("/register", async (req, res) => {
 // Login Route
 authRoute.post("/login", async (req, res) => {
   try {
+    await connectToDB()
     const { email, password } = req.body || {};
+    connectToDB()
 
     if (!email || !password) {
       return res.status(400).json({ error: "Email & password are required!" });
@@ -102,6 +106,7 @@ authRoute.post("/login", async (req, res) => {
 // Reset passwrod send link on email
 authRoute.post("/reset", async (req, res) => {
   try {
+    await connectToDB()
     const { email } = req.body || {};
     const user = await User.findOne({ email });
     if (!user) {
@@ -135,6 +140,7 @@ authRoute.post("/reset", async (req, res) => {
 
 authRoute.post("/reset/:token", async (req, res) => {
   try {
+    await connectToDB()
     const { token } = req.params;
     const { newPassword } = req.body || {};
 

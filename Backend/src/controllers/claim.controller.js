@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { Claim } from "../models/Claim.js";
 import { CustomerPolicy } from "../models/CustomerPolicy.js";
+import { connectToDB } from "../config/db.config.js";
 // import { Transaction } from '../models/Transaction.js'
 
 const ObjectId = mongoose.Types.ObjectId;
@@ -23,6 +24,7 @@ const populateClaim = (query) =>
  */
 export const createClaim = async (req, res) => {
   try {
+    await connectToDB()
     const customerId = req.user?.id;
     const { customerPolicy: customerPolicyId, claimType, claimAmount, description, documents = [] } = req.body || {};
 
@@ -102,6 +104,7 @@ export const createClaim = async (req, res) => {
  */
 export const getMyClaims = async (req, res) => {
   try {
+    await connectToDB()
     const customerId = req.user?.id;
     const { status, claimType, page = 1, limit = 10 } = req.query;
 
@@ -131,6 +134,7 @@ export const getMyClaims = async (req, res) => {
  */
 export const getAllClaims = async (req, res) => {
   try {
+    await connectToDB()
     const role = req.user?.role;
     if (!["agent", "admin"].includes(role))
       return res.status(403).json({ message: "Only agents or admins can access all claims." });
@@ -180,6 +184,7 @@ export const getAllClaims = async (req, res) => {
  */
 export const getClaimById = async (req, res) => {
   try {
+    await connectToDB()
     const { id } = req.params;
     if (!ObjectId.isValid(id)) return res.status(400).json({ message: "Invalid claim id." });
 
@@ -204,6 +209,7 @@ export const getClaimById = async (req, res) => {
  */
 export const updateClaim = async (req, res) => {
   try {
+    await connectToDB()
     const { id } = req.params;
     const updates = req.body || {};
     const userId = req.user?.id;
@@ -271,6 +277,7 @@ export const updateClaim = async (req, res) => {
  */
 export const moveClaimToReview = async (req, res) => {
   try {
+    await connectToDB()
     const { id } = req.params;
     const role = req.user?.role;
     const agentId = req.user?.id;
@@ -306,6 +313,7 @@ export const approveClaim = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
+    await connectToDB()
     const { id } = req.params;
     const adminId = req.user?.id;
     const role = req.user?.role;
@@ -423,6 +431,7 @@ export const approveClaim = async (req, res) => {
  */
 export const rejectClaim = async (req, res) => {
   try {
+    await connectToDB()
     const { id } = req.params;
     const adminId = req.user?.id;
     const role = req.user?.role;
@@ -462,6 +471,7 @@ export const rejectClaim = async (req, res) => {
  */
 export const deleteClaim = async (req, res) => {
   try {
+    await connectToDB()
     const { id } = req.params;
     const userId = req.user?.id;
     const role = req.user?.role;
