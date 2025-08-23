@@ -24,11 +24,10 @@
     credentials: true, // allow cookies/auth headers
   }));
 
-  const db = process.env.MONGODB_URI
 
   // Basic app get Route 
   app.get("/" , (req, res)=>{
-      res.status(200).send(`<center>Insurance Management System Backend Apis ${db}</center>`)
+      res.status(200).send(`<center>Insurance Management System Backend Apis</center>`)
   })
 
   // auth routes
