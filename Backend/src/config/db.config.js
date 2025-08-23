@@ -10,7 +10,7 @@ export const connectToDB = async () => {
   if (isConnected) return;
 
   try {
-    console.log(process.env.MONGODB_URI || 'mongodb://localhost:27017/')
+    console.log(process.env.MONGODB_URI || "mongodb+srv://mohanlal:Mohanlal%404321%23@cluster0.t4mcf4u.mongodb.net/insurance")
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/');
     isConnected = true;
     console.log("MongoDB connected");
