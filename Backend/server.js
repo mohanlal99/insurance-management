@@ -9,7 +9,7 @@ const server = http.createServer(app); // Setup a http server using an express a
 
 connectToDB() // Connect to the database
 
-// // Start the server 
+// Start the server 
 // server.listen(PORT, () => {
 //   console.log(`Server is runing on http://localhost:${PORT}`);
 // });
