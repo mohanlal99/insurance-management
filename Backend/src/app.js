@@ -47,7 +47,7 @@
   app.use("/api/customer-policies", customerRoute)
   app.use('/api/transactions', transactionRoute)
   // admin and agent verified for the policy route
-  app.use(roleMiddleware)
+  
 
   app.use('/api/policies', policiesRoute)
 
