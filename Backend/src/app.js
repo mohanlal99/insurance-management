@@ -20,7 +20,7 @@
   app.use(cookieParser()) // cookie parser 
 
   app.use(cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000", // frontend URL
+    origin: process.env.CLIENT_URL || "http://localhost:5173", // frontend URL
     credentials: true, // allow cookies/auth headers
   }));
 
